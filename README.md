@@ -1,71 +1,3 @@
-<<<<<<< HEAD
-# CARTEXTO - Car Guessing Game
-
-A fun and challenging car guessing game where players test their automotive knowledge by trying to identify mystery cars based on various attributes.
-
-## Features
-
-- Daily car guessing challenge
-- Feedback on guesses with color-coded hints
-- Detailed car information display
-- Mobile-responsive design
-- Real-time feedback
-
-## Tech Stack
-
-- React + TypeScript
-- Vite
-- Tailwind CSS
-- Supabase
-- Framer Motion
-
-## Setup
-
-1. Clone the repository:
-```bash
-git clone [repository-url]
-cd cartexto
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Set up environment variables:
-Create a `.env` file with:
-```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-4. Run development server:
-```bash
-npm run dev
-```
-
-## Deployment
-
-1. Build the project:
-```bash
-npm run build
-```
-
-2. Deploy to Vercel:
-```bash
-vercel
-```
-
-Remember to add your environment variables in the Vercel dashboard.
-
-## License
-
-MIT License - feel free to use and modify for your own projects!
-
-## Credits
-
-Created by [Your Name]
-=======
 # Welcome to your Lovable project
 
 ## Project info
@@ -139,4 +71,3 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc

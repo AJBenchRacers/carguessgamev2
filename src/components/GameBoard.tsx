@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * GameBoard Component
  * 
@@ -6,8 +5,6 @@
  * and coordinates between different game elements.
  */
 
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
 import { useState, useEffect } from "react";
 import GuessForm from "@/components/GuessForm";
 import GuessHistory from "@/components/GuessHistory";
@@ -17,7 +14,6 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-<<<<<<< HEAD
 /**
  * Type definition for a car guess made by the player
  * Includes all possible attributes that can be guessed and feedback for each
@@ -34,20 +30,6 @@ export type CarGuess = {
   country?: string;      // Country of origin
   drivetrain?: string;   // Type of drivetrain
   feedback?: {           // Feedback for each guessed attribute
-=======
-export type CarGuess = {
-  make: string;
-  model: string;
-  year: string;
-  id: string;
-  guessNumber?: number;
-  fullName?: string;
-  carClass?: string;
-  cylinders?: number;
-  country?: string;
-  drivetrain?: string;
-  feedback?: {
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
     correctMake: boolean;
     correctModel: boolean;
     correctYear: boolean;
@@ -55,7 +37,6 @@ export type CarGuess = {
     correctCylinders?: boolean;
     correctCountry?: boolean;
     correctDrivetrain?: boolean;
-<<<<<<< HEAD
     yearDirection?: 'up' | 'down';      // Hint for year (higher/lower)
     cylindersDirection?: 'up' | 'down'; // Hint for cylinders (higher/lower)
     hint: string;                       // Textual hint for the guess
@@ -67,15 +48,6 @@ export type CarGuess = {
  * Type definition for the actual car data being guessed
  * Contains all possible attributes of a car in the game
  */
-=======
-    yearDirection?: 'up' | 'down';
-    cylindersDirection?: 'up' | 'down';
-    hint: string;
-    completed: boolean;
-  };
-};
-
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
 export type CarData = {
   id: string;
   make: string;
@@ -89,7 +61,6 @@ export type CarData = {
   imageUrl?: string;
 };
 
-<<<<<<< HEAD
 /**
  * Props interface for the GameBoard component
  */
@@ -104,6 +75,9 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
   // State management
   const [guesses, setGuesses] = useState<CarGuess[]>([]);  // History of player guesses
   const [loading, setLoading] = useState(false);           // Loading state for async operations
+  const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRIES = 3;
   const [gameWon, setGameWon] = useState(false);          // Whether the game has been won
   const [carData, setCarData] = useState<CarData | null>(null);  // The car to be guessed
   const { toast } = useToast();                           // Toast notification system
@@ -112,33 +86,23 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
    * Fetches a random car from the database when the component mounts
    * Currently uses mock data but is structured for Supabase integration
    */
-=======
-interface GameBoardProps {
-  onResetGame: () => void;
-}
-
-const GameBoard = ({ onResetGame }: GameBoardProps) => {
-  const [guesses, setGuesses] = useState<CarGuess[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [gameWon, setGameWon] = useState(false);
-  const [carData, setCarData] = useState<CarData | null>(null);
-  const { toast } = useToast();
-  
-  // This would be replaced with actual Supabase logic
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
   useEffect(() => {
     const fetchRandomCar = async () => {
       setLoading(true);
+      setError(null);
       try {
-<<<<<<< HEAD
         // Fetch all cars first
         // @ts-ignore: bypass Supabase strict table type checking
-        const { data: allCars, error: countError } = await (supabase as any)
+        const { data: allCars, error: countError } = await supabase
           .from('cars')
           .select('id');
 
-        if (countError || !allCars) {
-          throw new Error('Could not get cars');
+        if (countError) {
+          throw new Error('Could not fetch cars list');
+        }
+
+        if (!allCars?.length) {
+          throw new Error('No cars available in the database');
         }
 
         // Use current date as seed for random selection
@@ -150,26 +114,21 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
 
         // Fetch the specific car
         // @ts-ignore: bypass Supabase strict table type checking
-        const { data: rawData, error } = await (supabase as any)
+        const { data: rawData, error } = await supabase
           .from('cars')
           .select('id, brand, model, production_years, from_year, "Class", cylinders, "Country", "Drivetrain", body_style, image_urls')
           .eq('id', randomCar.id)
           .single();
 
         if (error) {
-          console.error('Failed to fetch car:', error);
-          throw new Error(`Database error: ${error.message}`);
+          throw new Error(`Failed to fetch car details: ${error.message}`);
         }
 
         if (!rawData) {
-          console.error('No car found');
-          throw new Error('No car found');
+          throw new Error('Selected car not found');
         }
-        
-        // Get the first year from production_years if from_year is not available
+
         const year = rawData.from_year?.toString() || rawData.production_years?.split(',')[0]?.trim();
-        
-        // Get first image URL from comma-separated list
         const imageUrl = rawData.image_urls
           ? rawData.image_urls.split(',')[0].trim()
           : undefined;
@@ -189,42 +148,28 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
 
         setCarData(selectedCar);
         setLoading(false);
+        setRetryCount(0); // Reset retry count on success
       } catch (err) {
-        console.error('Error fetching car:', err);
-        toast({
-          title: 'Error',
-          description: 'Failed to load car data. Please try again.',
-          variant: 'destructive',
-=======
-        // In a future update, this would fetch from Supabase
-        // For now, using mock data
-        setTimeout(() => {
-          setCarData({
-            id: "1",
-            make: "Toyota",
-            model: "Corolla",
-            year: "2022",
-            carClass: "Compact",
-            cylinders: 4,
-            country: "Japan",
-            drivetrain: "Front Wheel Drive",
-            bodyStyle: "Sedan",
-            imageUrl: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dG95b3RhJTIwY29yb2xsYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
+        const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+        setError(errorMessage);
+        
+        // Implement retry logic
+        if (retryCount < MAX_RETRIES) {
+          setRetryCount(prev => prev + 1);
+          setTimeout(() => {
+            fetchRandomCar();
+          }, Math.pow(2, retryCount) * 1000); // Exponential backoff
+        } else {
+          toast({
+            title: 'Error',
+            description: 'Failed to load car data after multiple attempts. Please try again later.',
+            variant: 'destructive',
           });
           setLoading(false);
-        }, 1000);
-      } catch (error) {
-        console.error("Error fetching car:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load car data. Please try again.",
-          variant: "destructive",
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
-        });
-        setLoading(false);
+        }
       }
     };
-<<<<<<< HEAD
+
     fetchRandomCar();
   }, [toast]);
 
@@ -232,12 +177,6 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
    * Handles the submission of a new guess
    * Compares the guess with the actual car data and provides feedback
    */
-=======
-    
-    fetchRandomCar();
-  }, [toast]);
-
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
   const handleSubmitGuess = async (guess: Omit<CarGuess, "id" | "feedback">) => {
     if (!carData) return;
     
@@ -250,7 +189,6 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
       guessNumber: guesses.length + 1
     };
     
-<<<<<<< HEAD
     // Simulate API delay and process the guess
     setTimeout(() => {
       // Compare each attribute of the guess with the actual car
@@ -318,21 +256,6 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
       const completed = correctMake && correctModel && correctYear;
       
       // Determine direction hints for numeric values
-=======
-    // In a future update, this would compare against the data from Supabase
-    setTimeout(() => {
-      // Compare guess with the actual car
-      const correctMake = guess.make.toLowerCase() === carData.make.toLowerCase();
-      const correctModel = guess.model.toLowerCase() === carData.model.toLowerCase();
-      const correctYear = guess.year === carData.year;
-      const correctClass = guess.carClass === carData.carClass;
-      const correctCylinders = guess.cylinders === carData.cylinders;
-      const correctCountry = guess.country === carData.country;
-      const correctDrivetrain = guess.drivetrain === carData.drivetrain;
-      
-      const completed = correctMake && correctModel && correctYear;
-      
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       const yearDirection = !correctYear 
         ? Number(guess.year) < Number(carData.year) 
           ? 'up' 
@@ -345,11 +268,7 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
           : 'down'
         : undefined;
       
-<<<<<<< HEAD
       // Generate appropriate hint message based on guess accuracy
-=======
-      // Generate a hint
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       let hint = "";
       if (completed) {
         hint = "Perfect match! You got it!";
@@ -369,11 +288,7 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
         hint = "All main guesses are incorrect.";
       }
       
-<<<<<<< HEAD
       // Create the complete guess object with feedback
-=======
-      // Add feedback to the guess
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       const guessWithFeedback: CarGuess = {
         ...guessWithId,
         feedback: {
@@ -391,19 +306,11 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
         },
       };
       
-<<<<<<< HEAD
       // Update guesses history
       setGuesses((prev) => [...prev, guessWithFeedback]);
       setLoading(false);
       
       // Check for win condition
-=======
-      // Add to guesses history
-      setGuesses((prev) => [...prev, guessWithFeedback]);
-      setLoading(false);
-      
-      // Check if game is won
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       if (completed) {
         setGameWon(true);
         toast({
@@ -415,30 +322,46 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
     }, 800);
   };
   
-<<<<<<< HEAD
   /**
    * Resets the game state
    */
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
   const handlePlayAgain = () => {
     onResetGame();
   };
   
-<<<<<<< HEAD
-  // Loading state UI
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
+  // Loading state UI with retry button
   if (!carData) {
     return (
       <div className="flex flex-col items-center justify-center p-8 py-16">
-        <LoadingSpinner />
-        <p className="mt-4 text-gray-600">Loading car data...</p>
+        {loading ? (
+          <>
+            <LoadingSpinner />
+            <p className="mt-4 text-gray-600">Loading car data...</p>
+            {retryCount > 0 && (
+              <p className="mt-2 text-sm text-gray-500">
+                Retry attempt {retryCount} of {MAX_RETRIES}...
+              </p>
+            )}
+          </>
+        ) : error ? (
+          <div className="text-center">
+            <p className="text-red-500 mb-4">{error}</p>
+            <Button 
+              onClick={() => {
+                setRetryCount(0);
+                setError(null);
+                setLoading(true);
+              }}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Try Again
+            </Button>
+          </div>
+        ) : null}
       </div>
     );
   }
   
-<<<<<<< HEAD
   // Main game UI
   return (
     <div className="p-4 md:p-6 bg-slate-900 text-white">
@@ -448,12 +371,6 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
           onPlayAgain={handlePlayAgain}
           guessCount={guesses.length}
         />
-=======
-  return (
-    <div className="p-4 md:p-6 bg-slate-900 text-white">
-      {gameWon ? (
-        <WinScreen carData={carData} onPlayAgain={handlePlayAgain} />
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       ) : (
         <>
           <div className="mb-6 text-center">
@@ -485,7 +402,6 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
   );
 };
 
-<<<<<<< HEAD
 // Debug function to check table structure
 const debugTableStructure = async () => {
   try {
@@ -514,6 +430,4 @@ const debugTableStructure = async () => {
 // Call debug function
 debugTableStructure();
 
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
 export default GameBoard;

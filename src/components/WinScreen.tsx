@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * WinScreen Component
  * 
@@ -7,14 +6,11 @@
  * with confetti and displays detailed information about the
  * correctly guessed car.
  */
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
-<<<<<<< HEAD
 import { CarData } from "@/components/GameBoard";
 
 /**
@@ -35,17 +31,6 @@ const WinScreen = ({ carData, onPlayAgain, guessCount }: WinScreenProps) => {
    * Triggers confetti animation when the component mounts
    * Creates a celebratory effect with particles shooting from both sides
    */
-=======
-import { CarData } from "./GameBoard";
-
-interface WinScreenProps {
-  carData: CarData;
-  onPlayAgain: () => void;
-}
-
-const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
-  // Trigger confetti when component mounts
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
   useEffect(() => {
     const duration = 3 * 1000;
     const animationEnd = Date.now() + duration;
@@ -56,20 +41,14 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
       zIndex: 0
     };
 
-<<<<<<< HEAD
     /**
      * Helper function to generate random numbers in a range
      */
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
     function randomInRange(min: number, max: number) {
       return Math.random() * (max - min) + min;
     }
 
-<<<<<<< HEAD
     // Create confetti animation interval
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
     const interval = setInterval(function() {
       const timeLeft = animationEnd - Date.now();
 
@@ -79,27 +58,19 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
 
       const particleCount = 50 * (timeLeft / duration);
       
-<<<<<<< HEAD
       // Launch confetti from left side
-=======
-      // since particles fall down, start a bit higher than random
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       confetti(Object.assign({}, defaults, {
         particleCount,
         origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
       }));
       
-<<<<<<< HEAD
       // Launch confetti from right side
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       confetti(Object.assign({}, defaults, {
         particleCount,
         origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
       }));
     }, 250);
 
-<<<<<<< HEAD
     // Cleanup interval on unmount
     return () => clearInterval(interval);
   }, []);
@@ -120,35 +91,6 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
         <p className="text-xl text-gray-300">You've correctly guessed today's car in {guessCount} {guessCount === 1 ? 'guess' : 'guesses'}!</p>
       </motion.div>
 
-=======
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="text-center py-8 px-4 space-y-6 bg-slate-900 text-white"
-    >
-      <motion.h2
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="text-3xl md:text-4xl font-bold text-white"
-      >
-        Congratulations!
-      </motion.h2>
-      
-      <motion.p
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="text-xl text-gray-300"
-      >
-        You've correctly guessed today's car!
-      </motion.p>
-      
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -157,10 +99,7 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
       >
         <h3 className="text-xl font-semibold mb-4 text-white">Car Details</h3>
         
-<<<<<<< HEAD
         {/* Car image if available */}
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
         {carData.imageUrl && (
           <div className="mb-4 overflow-hidden rounded-md">
             <img
@@ -171,10 +110,7 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
           </div>
         )}
         
-<<<<<<< HEAD
         {/* Grid of car attributes */}
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
         <div className="grid grid-cols-2 gap-y-2 text-left">
           <div className="font-semibold">Make:</div>
           <div>{carData.make}</div>
@@ -185,10 +121,7 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
           <div className="font-semibold">Year:</div>
           <div>{carData.year}</div>
           
-<<<<<<< HEAD
           {/* Optional attributes */}
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
           {carData.carClass && (
             <>
               <div className="font-semibold">Class:</div>
@@ -198,13 +131,8 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
           
           {carData.cylinders && (
             <>
-<<<<<<< HEAD
               <div className="font-semibold">Engine:</div>
               <div>{carData.cylinders} cylinders</div>
-=======
-              <div className="font-semibold">Cylinders:</div>
-              <div>{carData.cylinders}</div>
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
             </>
           )}
           
@@ -231,10 +159,7 @@ const WinScreen = ({ carData, onPlayAgain }: WinScreenProps) => {
         </div>
       </motion.div>
       
-<<<<<<< HEAD
       {/* Play again button with animation */}
-=======
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

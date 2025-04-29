@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -45,16 +41,11 @@ const LandingPage = ({ onStartGame }: LandingPageProps) => {
           className="mb-8 max-w-md"
         >
           <p className="text-gray-300 mb-4">
-<<<<<<< HEAD
             Can you guess the mystery car?
-=======
-            Can you guess the mystery car with limited information?
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
           </p>
           <div className="flex justify-center space-x-4 mb-6">
             <div className="flex flex-col items-center">
               <div className="w-10 h-10 rounded-full bg-red-700 flex items-center justify-center mb-2">
-<<<<<<< HEAD
               </div>
               <span className="text-sm">Incorrect</span>
             </div>
@@ -67,23 +58,6 @@ const LandingPage = ({ onStartGame }: LandingPageProps) => {
               <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center mb-2">
               </div>
               <span className="text-sm">Correct</span>
-=======
-                <span className="font-bold">✓</span>
-              </div>
-              <span className="text-sm">Correct</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center mb-2">
-                <span className="font-bold">≈</span>
-              </div>
-              <span className="text-sm">Partial</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center mb-2">
-                <span className="font-bold text-lg">↑</span>
-              </div>
-              <span className="text-sm">Higher</span>
->>>>>>> db532bcc95def19b31d2eb31225d2d3ea3e72dfc
             </div>
           </div>
         </motion.div>
