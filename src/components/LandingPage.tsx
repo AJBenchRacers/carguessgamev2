@@ -35,6 +35,26 @@ const LandingPage = ({ onStartGame }: LandingPageProps) => {
         </motion.div>
         
         <motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="mb-6 max-w-lg"
+        >
+          <h2 className="text-xl font-semibold mb-2 text-white">How to Play</h2>
+          <ul className="text-gray-300 text-base list-disc list-inside space-y-1">
+            <li>Guess the mystery car by entering its make, model, and year.</li>
+            <li>Each guess will give you feedback for each attribute:</li>
+            <ul className="ml-6">
+              <li><span className="text-green-400 font-semibold">Green</span>: Correct value</li>
+              <li><span className="text-yellow-300 font-semibold">Yellow</span>: Close (within 5 years or 2 cylinders)</li>
+              <li><span className="text-red-400 font-semibold">Red</span>: Incorrect</li>
+            </ul>
+            <li>Use the arrows for year and engine to see if you need to guess higher or lower.</li>
+            <li>Try to guess the car in as few attempts as possible!</li>
+          </ul>
+        </motion.div>
+        
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
