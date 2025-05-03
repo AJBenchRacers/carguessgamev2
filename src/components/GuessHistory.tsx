@@ -62,6 +62,8 @@ const GuessHistory = ({ guesses }: GuessHistoryProps) => {
                   className={`py-2 px-3 rounded text-center ${
                     guess.feedback?.correctYear 
                       ? "bg-green-600 text-white" 
+                      : guess.feedback?.isYearClose
+                      ? "bg-yellow-500 text-white"
                       : "bg-red-700/80 text-white"
                   }`}
                 >
@@ -92,6 +94,8 @@ const GuessHistory = ({ guesses }: GuessHistoryProps) => {
                   className={`py-2 px-3 rounded text-center ${
                     guess.feedback?.correctCylinders 
                       ? "bg-green-600 text-white" 
+                      : guess.feedback?.isCylindersClose
+                      ? "bg-yellow-500 text-white"
                       : "bg-red-700/80 text-white"
                   }`}
                 >

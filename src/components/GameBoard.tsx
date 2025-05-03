@@ -41,6 +41,8 @@ export type CarGuess = {
     cylindersDirection?: 'up' | 'down'; // Hint for cylinders (higher/lower)
     hint: string;                       // Textual hint for the guess
     completed: boolean;                 // Whether all main attributes are correct
+    isYearClose: boolean;
+    isCylindersClose: boolean;
   };
 };
 
@@ -191,6 +193,23 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
     
     // Simulate API delay and process the guess
     setTimeout(() => {
+      // Extract numeric part from cylinders (e.g., 'V8' -> 8, 'L4' -> 4)
+      const parseCylinders = (cyl: any) => {
+        if (typeof cyl === 'number') return cyl;
+        if (typeof cyl === 'string') {
+          const match = cyl.match(/(\d+)/);
+          return match ? parseInt(match[1], 10) : undefined;
+        }
+        return undefined;
+      };
+      const guessCylNum = parseCylinders(guess.cylinders);
+      const actualCylNum = parseCylinders(carData.cylinders);
+
+      // Require exact string match for correctCylinders (case-insensitive, trimmed)
+      const guessCylStr = (guess.cylinders || '').toString().trim().toLowerCase();
+      const actualCylStr = (carData.cylinders || '').toString().trim().toLowerCase();
+      const correctCylinders = guessCylStr === actualCylStr;
+      
       // Compare each attribute of the guess with the actual car
       console.log('Comparing guess vs actual:', {
         make: {
@@ -234,9 +253,12 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
       const correctModel = guessModel.toLowerCase() === actualModel.toLowerCase();
       const correctYear = guess.year === carData.year;
       const correctClass = guess.carClass === carData.carClass;
-      const correctCylinders = guess.cylinders === carData.cylinders;
       const correctCountry = guess.country?.toLowerCase() === carData.country?.toLowerCase();
       const correctDrivetrain = guess.drivetrain === carData.drivetrain;
+      
+      // Add logic for close guesses
+      const isYearClose = !correctYear && Math.abs(Number(guess.year) - Number(carData.year)) <= 5;
+      const isCylindersClose = !correctCylinders && guessCylNum !== undefined && actualCylNum !== undefined && Math.abs(guessCylNum - actualCylNum) <= 2;
       
       console.log('Comparison results:', {
         correctMake,
@@ -246,6 +268,8 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
         correctCylinders,
         correctCountry,
         correctDrivetrain,
+        isYearClose,
+        isCylindersClose,
         cleanedModels: {
           guess: guessModel,
           actual: actualModel
@@ -262,8 +286,9 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
           : 'down'
         : undefined;
         
-      const cylindersDirection = !correctCylinders && guess.cylinders && carData.cylinders
-        ? guess.cylinders < carData.cylinders 
+      // Only show arrow if numbers are different and not an exact string match
+      const cylindersDirection = !correctCylinders && guessCylNum !== undefined && actualCylNum !== undefined && guessCylNum !== actualCylNum
+        ? guessCylNum < actualCylNum 
           ? 'up' 
           : 'down'
         : undefined;
@@ -303,6 +328,8 @@ const GameBoard = ({ onResetGame }: GameBoardProps) => {
           cylindersDirection,
           hint,
           completed,
+          isYearClose,
+          isCylindersClose
         },
       };
       
